@@ -14,24 +14,27 @@
 </head>
 
 <body>
-  <header>
-    <!-- place navbar here -->
-  </header>
+
   <main>
-    <form method="POST" action="cliente-insert.php">
+    <form>
         <p>
         <label for="inCodigo">Codigo</label>
         <input type="number" name="codigo" id="inCodigo" >
         </p>
         <p>
-        <label for="inCodigo">Codigo</label>
+        <label for="inCodigo">Nome</label>
         <input type="text" name="nome" id="inNome" >
         </p>
         <p>
-        <label for="inCodigo">Codigo</label>
+        <label for="inCodigo">Email</label>
         <input type="email" name="email" id="inEmail">
         </p>
+        <p>
+          <input type="reset">
+          <input type="submit">
     </form>
+    <script src="js/ajax-submit.js"></script>
+    <div id=resp></div>
   </main>
   <footer>
     <!-- place footer here -->
