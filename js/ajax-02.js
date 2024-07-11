@@ -1,7 +1,7 @@
-const btn = document.getElementById("btn");
+const btn1 = document.getElementById("btn1");
 const content = document.getElementById("content");
 
-btn.addEventListener("click", (e) => {
+btn1.addEventListener("click", (e) => {
    const req = new XMLHttpRequest();
    req.onload = function () {
       if (req.status == 200) {
@@ -14,11 +14,7 @@ btn.addEventListener("click", (e) => {
             html += "<tr>";
             html += `<td>${cliente.codigo}</td>`;
             html += `<td>${cliente.nome}</td>`;
-            html += `<td>${cliente.email}</td>`;
-            html += '<td>';            
-            html += '<button class="btn-info"><i class "fa-solid da-pencil"><i/>';            
-            html += '<button class="btn-danger"><i class "fa-solid fa-trash-can"><i/></button>'; 
-            html += '</td>';            
+            html += `<td>${cliente.email}</td>`;            
             html += "</tr>";
          }
          html += "</table>";
@@ -28,6 +24,6 @@ btn.addEventListener("click", (e) => {
          alert(`Erro: ${req.status} ${req.statusText}`);
       }
    }
-   req.open("GET", "busca-clientes.php");
+   req.open("GET", "ajax-04.php");
    req.send();
 })

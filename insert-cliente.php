@@ -2,15 +2,16 @@
 require_once("conexao-bd.php");
 // essa linha de cima é como se eu esticesse carregando o arquivo conexao-bd.php aqui dentro
 
+print_r($_REQUEST);
+//nos estamos printando para ver o que tem no $_REQUEST
+$request = (object) $_REQUEST;
+//o $_REQUEST que é um vetor vira um objeto.
+
 try{
-    $stmt = $conn->prepare("SELECT * FROM cliente");
+    $stmt = $conn->prepare("INSERT INTO cliente (nome, email) VALUES(?,?)");
     //Aqui, estamos preparando uma consulta SQL para selecionar todos os registros da tabela “cliente”.
     //Em seguida, executamos a consulta com $stmt->execute();.
-    $stmt->execute();
-
-    //foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $k=>$v) {
-    //    print_r($v);
-    //}
+    $stmt->execute([$request->nome,$request->email]);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     //A função fetchAll() é usada para buscar todos os resultados da consulta SQL que foi executada anteriormente.
