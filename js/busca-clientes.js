@@ -9,13 +9,13 @@ btnIncluirCliente.addEventListener("click", (e) => {
 });
 btnIncluir.addEventListener("click", (e) => {
    e.preventDefault();
-   alert("btnIncluir");
+  // alert("btnIncluir");
    let cliente = new FormData(document.getElementById("frmIncluirCliente"));
    console.log(cliente);
    const xhr = new XMLHttpRequest();
    xhr.onload = function () {
       if (xhr.status == 200) {
-         alert(xhr.responseText);
+        // alert(xhr.responseText);
          alert("Inclusao ok");
          frmIncluirCliente.reset();
          buscaClientes();
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", buscaClientes);
 btn.addEventListener("click", buscaClientes);
 
 function buscaClientes() {
-   alert("buscaClientes");
+   //alert("buscaClientes");
    const req = new XMLHttpRequest();
 
    req.onload = function () {
