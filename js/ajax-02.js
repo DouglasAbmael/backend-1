@@ -1,7 +1,7 @@
-const btn1 = document.getElementById("btn1");
+const btn = document.getElementById("btn");
 const content = document.getElementById("content");
 
-btn1.addEventListener("click", (e) => {
+btn.addEventListener("click", (e) => {
    const req = new XMLHttpRequest();
    req.onload = function () {
       if (req.status == 200) {
@@ -24,6 +24,6 @@ btn1.addEventListener("click", (e) => {
          alert(`Erro: ${req.status} ${req.statusText}`);
       }
    }
-   req.open("GET", "ajax-04.php");
+   req.open("GET", "busca-clientes.php");
    req.send();
 })

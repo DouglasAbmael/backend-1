@@ -1,4 +1,6 @@
 document.addEventListener("submit", (e) => {
+    e.preventDefault();
+
     const form = document.querySelector("form");
     let data = {
         codigo: form.inCodigo.value,
@@ -6,21 +8,19 @@ document.addEventListener("submit", (e) => {
         email: form.inEmail.value
     };
     console.log(data);
-    e.preventDefault();
-
 
     const req = new XMLHttpRequest();
     req.onload = function () {
         if (req.status == 200) {
+            // let resp = JSON.parse(this.responseText);
             let resp = this.responseText;
+            // content.innerHTML = html;
             document.getElementById("resp").innerText = resp;
-        }
-        else {
-            alert(`Error: ${req.status} ${req.statusText}`);
+        } else {
+            alert(`Erro: ${req.status} ${req.statusText}`)
         }
     }
     req.open("POST", "cliente-insert.php");
-    req.setRequestHeader('content-type', 'application/json; charset=UTF-8');
+    req.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
     req.send(JSON.stringify(data));
-
 })
