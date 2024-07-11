@@ -70,5 +70,16 @@ delCliente(){
    let ret = confirm("Confirmar a exclusão do registro? ");
    if(ret==true){
       console.log(id);
+      let xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+         if (xhr.status==200) {
+            alert("Exclusao ok");
+         }
+         else {
+            alert(`Erro: ${xhr.status} ${xhr.statusText}`);
+         }
+      }
+      xhr.open("POST", "cliente-delete.php");
+      xhr.send(JSON.stringify(data));
    }
 }
