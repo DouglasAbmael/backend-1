@@ -9,13 +9,13 @@ btnIncluirCliente.addEventListener("click", (e) => {
 });
 btnIncluir.addEventListener("click", (e) => {
    e.preventDefault();
-  // alert("btnIncluir");
+   alert("btnIncluir");
    let cliente = new FormData(document.getElementById("frmIncluirCliente"));
    console.log(cliente);
    const xhr = new XMLHttpRequest();
    xhr.onload = function () {
       if (xhr.status == 200) {
-        // alert(xhr.responseText);
+         alert(xhr.responseText);
          alert("Inclusao ok");
          frmIncluirCliente.reset();
          buscaClientes();
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", buscaClientes);
 btn.addEventListener("click", buscaClientes);
 
 function buscaClientes() {
-   //alert("buscaClientes");
+  // alert("buscaClientes");
    const req = new XMLHttpRequest();
 
    req.onload = function () {
@@ -45,12 +45,13 @@ function buscaClientes() {
          // buscar registros de clientes
          for (let cliente of vetorClientes) {
             html += "<tr>";
+            // html += "<tr><td>Cod</th><th>Nome</th><th>Email</th></td>";
             html += `<td>${cliente.codigo}</td>`;
             html += `<td>${cliente.nome}</td>`;
             html += `<td>${cliente.email}</td>`;
             html += "<td>";
-            html += '<button  class="btn btn-info" btnUpdate onClick="showClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-pen-to-square"></i></button>';
-            html += '<button class="btn btn-danger" btnDelete onClick="delClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-trash-can"></i></button>';
+            html += `<button  class="btn btn-info" onClick="showClienteUpForm(${cliente.codigo})"><i class="fa-solid fa-pen-to-square"></i></button>`;
+            html += `<button class="btn btn-danger" onClick="delCliente(${cliente.codigo});"><i class="fa-solid fa-trash-can"></i></button>`;
             html += "</td>";
             html += "</tr>";
          }
@@ -66,20 +67,21 @@ function buscaClientes() {
 }
 
 function
-delCliente(){
-   let ret = confirm("Confirmar a exclusão do registro? ");
-   if(ret==true){
-      console.log(id);
+   delCliente(id) {
+   if (confirm("Confirmar a exclusão do registro? ") == true) {
+      let data = new FormData();
+      data.append("id", id);
+      console.log(data);
       let xhr = new XMLHttpRequest();
-      xhr.onload = function() {
-         if (xhr.status==200) {
-            alert("Exclusao ok");
-         }
-         else {
-            alert(`Erro: ${xhr.status} ${xhr.statusText}`);
+      xhr.onload = function () {
+         if (xhr.status == 200) {
+            alert("Exclusao OK");
+            buscaClientes();
+         } else {
+            alert(`Erro: ${xhr.status} ${xhr.status.Text} `);
          }
       }
-      xhr.open("POST", "cliente-delete.php");
-      xhr.send(JSON.stringify(data));
+      xhr.open("POST", "php/cliente-delete.php");
+      xhr.send(data);
    }
 }
