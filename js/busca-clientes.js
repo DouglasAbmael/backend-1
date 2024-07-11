@@ -49,8 +49,8 @@ function buscaClientes() {
             html += `<td>${cliente.nome}</td>`;
             html += `<td>${cliente.email}</td>`;
             html += "<td>";
-            html += '<button  class="btn btn info" btnUpdate onClick="showClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-pen-to-square"></i></button>';
-            html += '<button class="btn btn danger" btnDelete onClick="delClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-trash-can"></i></button>';
+            html += '<button  class="btn btn-info" btnUpdate onClick="showClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-pen-to-square"></i></button>';
+            html += '<button class="btn btn-danger" btnDelete onClick="delClienteUpForm {$(cliente.codigo)}"><i class="fa-solid fa-trash-can"></i></button>';
             html += "</td>";
             html += "</tr>";
          }
