@@ -66,7 +66,7 @@ function showClientUpForm(codigo) {
    let xhr = new XMLHttpRequest();
    xhr.onload = function () {
       if (xhr.status === 200) {
-         // console.log(xhr.responseText);
+         console.log(xhr.responseText);
          cliente = JSON.parse(xhr.responseText)[0];
          console.log(cliente);
          const frm = document.getElementById("frmAlterarCliente");
