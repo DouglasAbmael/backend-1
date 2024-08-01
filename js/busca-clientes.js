@@ -1,58 +1,54 @@
-const btn = document.getElementById("btn");
+const btnBusca = document.getElementById("btnBusca");
 const btnIncluirCliente = document.getElementById("btnIncluirCliente");
 const btnIncluir = document.getElementById("btnIncluir");
 const content = document.getElementById("content");
+const frmIncluirCliente = document.getElementById("frmIncluirCliente");
 
 btnIncluirCliente.addEventListener("click", (e) => {
-   const frmIncluirCliente = document.getElementById("frmIncluirCliente");
-   frmIncluirCliente.style.setProperty("display", "block");
-});
+   frmIncluirCliente.style.display = "block";
+})
+
 btnIncluir.addEventListener("click", (e) => {
    e.preventDefault();
-   alert("btnIncluir");
-   let cliente = new FormData(document.getElementById("frmIncluirCliente"));
-   console.log(cliente);
    const xhr = new XMLHttpRequest();
-   xhr.onload = function () {
+   const frmIncluirCliente = document.getElementById("frmIncluirCliente");
+   let cliente = new FormData(frmIncluirCliente);
+   xhr.onload = () => {
       if (xhr.status == 200) {
          alert(xhr.responseText);
-         alert("Inclusao ok");
-         frmIncluirCliente.reset();
+         alert("Inclusão OK");
+         frmIncluirCliente.inNome.value = "";
+         frmIncluirCliente.inEmail.value = "";
+         frmIncluirCliente.style.display = "none";
          buscaClientes();
       } else {
-         alert("Erro na inclusao");
+         alert("Erro inclusão");
       }
    }
-   xhr.open("POST", "php/insert-cliente.php");
+   xhr.open("POST", "insert-cliente.php");
    xhr.send(cliente);
 })
 
-document.addEventListener("DOMContentLoaded", buscaClientes);
-btn.addEventListener("click", buscaClientes);
+btnBusca.addEventListener("click", buscaClientes);
+document.addEventListener("DOMContentLoaded", buscaClientes());
 
 function buscaClientes() {
-  // alert("buscaClientes");
    const req = new XMLHttpRequest();
-
    req.onload = function () {
-
       if (req.status == 200) {
-
          let html = "<table class='table table-bordered table-hover table-sm'>";
-         html += "<tr><th>Cod</th><th>Nome</th><th>Email</th></tr>";
+         html += "<tr><th>Cod</th><th>Nome</th><th>Email</th><th>Alterações</th></tr>";
          const vetorClientes = JSON.parse(this.responseText);
-         console.log(vetorClientes);
          // buscar registros de clientes
          for (let cliente of vetorClientes) {
             html += "<tr>";
-            // html += "<tr><td>Cod</th><th>Nome</th><th>Email</th></td>";
             html += `<td>${cliente.codigo}</td>`;
             html += `<td>${cliente.nome}</td>`;
             html += `<td>${cliente.email}</td>`;
-            html += "<td>";
-            html += `<button  class="btn btn-info" onClick="showClienteUpForm(${cliente.codigo})"><i class="fa-solid fa-pen-to-square"></i></button>`;
-            html += `<button class="btn btn-danger" onClick="delCliente(${cliente.codigo});"><i class="fa-solid fa-trash-can"></i></button>`;
-            html += "</td>";
+            html += `<td class="d-flex justify-content-center gap-4">`;
+            html += `<button class='btn btn-warning' data-bs-toggle="modal" data-bs-target="#modalEditar" onClick="showClientUpForm(${cliente.codigo})"> <i class='fa-solid fa-pencil'></i> Editar</button>`;
+            html += `<button class='btn btn-danger' ms-3 onClick="delCliente(${cliente.codigo})"> <i class='fa-solid fa-trash-can'></i> Deletar</button>`;
+            html += `</td>`;
             html += "</tr>";
          }
          html += "</table>";
@@ -62,26 +58,50 @@ function buscaClientes() {
          alert(`Erro: ${req.status} ${req.statusText}`);
       }
    }
-   req.open("GET", "php/busca-clientes.php");
+   req.open("GET", "busca-clientes.php");
    req.send();
 }
 
-function
-   delCliente(id) {
-   if (confirm("Confirmar a exclusão do registro? ") == true) {
-      let data = new FormData();
+function showClientUpForm(codigo) {
+   let xhr = new XMLHttpRequest();
+   xhr.onload = function () {
+      if (xhr.status === 200) {
+         // console.log(xhr.responseText);
+         cliente = JSON.parse(xhr.responseText)[0];
+         console.log(cliente);
+         const frm = document.getElementById("frmAlterarCliente");
+         frm.codigo.value = cliente.codigo;
+         frm.nome.value = cliente.nome;
+         frm.email.value = cliente.email;
+      }
+   }
+
+   xhr.open("GET", `cliente-get.php?codigo=${codigo}`);
+   xhr.send();
+}
+
+function delCliente(id) {
+   const ret = confirm("Confirma a exclusão do registro?");
+   
+   if (ret == true) {
+      const data = new FormData();
       data.append("id", id);
+
       console.log(data);
-      let xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-         if (xhr.status == 200) {
-            alert("Exclusao OK");
+   
+      const req = new XMLHttpRequest();
+      req.onload = function () {
+         if (req.status == 200) {
+            alert("Exclusão OK");
             buscaClientes();
-         } else {
-            alert(`Erro: ${xhr.status} ${xhr.status.Text} `);
+         }
+         else {
+            alert(`Erro: ${req.status} ${req.statusText}`);
          }
       }
-      xhr.open("POST", "php/cliente-delete.php");
-      xhr.send(data);
+      req.open("POST", "delete-cliente.php");
+      req.send(data);
    }
 }
+
+
