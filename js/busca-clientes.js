@@ -7,7 +7,12 @@ const frmIncluirCliente = document.getElementById("frmIncluirCliente");
 const frmBuscarCliente =  document.getElementById("frmIncluirCliente");
 
 btnIncluirCliente.addEventListener("click", (e) => {
-   frmIncluirCliente.style.display = "block";
+   var xhr = new XMLHttpRequest();
+   xhr.onload = function(){
+}
+xhr.open("GET","uf-controller.php");
+xhr.send();
+   frmIncluirCliente.style.setProperty("display" , "block");
 })
 
 btnIncluir.addEventListener("click", (e) => {
