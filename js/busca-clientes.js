@@ -1,8 +1,10 @@
 const btnBusca = document.getElementById("btnBusca");
 const btnIncluirCliente = document.getElementById("btnIncluirCliente");
 const btnIncluir = document.getElementById("btnIncluir");
+const btnAtualizar = document.getElementById("btnAtualizar");
 const content = document.getElementById("content");
 const frmIncluirCliente = document.getElementById("frmIncluirCliente");
+const frmBuscarCliente =  document.getElementById("frmIncluirCliente");
 
 btnIncluirCliente.addEventListener("click", (e) => {
    frmIncluirCliente.style.display = "block";
@@ -27,12 +29,17 @@ btnIncluir.addEventListener("click", (e) => {
    }
    xhr.open("POST", "insert-cliente.php");
    xhr.send(cliente);
+   e.preventDefault();
 })
 
 btnBusca.addEventListener("click", buscaClientes);
 document.addEventListener("DOMContentLoaded", buscaClientes());
+frmBuscarCliente.addEventListener("submit", buscaClientes)
 
 function buscaClientes() {
+   console.log(buscaClientes);
+    const expressaoBusca = document.getElementById("expressaoBusca").value;
+    console.log(expressaoBusca);
    const req = new XMLHttpRequest();
    req.onload = function () {
       if (req.status == 200) {
@@ -58,7 +65,7 @@ function buscaClientes() {
          alert(`Erro: ${req.status} ${req.statusText}`);
       }
    }
-   req.open("GET", "busca-clientes.php");
+   req.open("GET", `busca-clientes.php?expressaoBusca=${expressaoBusca}`);
    req.send();
 }
 
@@ -66,7 +73,7 @@ function showClientUpForm(codigo) {
    let xhr = new XMLHttpRequest();
    xhr.onload = function () {
       if (xhr.status === 200) {
-         console.log(xhr.responseText);
+         // console.log(xhr.responseText);
          cliente = JSON.parse(xhr.responseText)[0];
          console.log(cliente);
          const frm = document.getElementById("frmAlterarCliente");
@@ -79,6 +86,23 @@ function showClientUpForm(codigo) {
    xhr.open("GET", `cliente-get.php?codigo=${codigo}`);
    xhr.send();
 }
+
+btnAtualizar.addEventListener("click", () => {
+   const frm = document.getElementById("frmAlterarCliente");
+   let cliente = new FormData(frm);
+
+   let xhr = new XMLHttpRequest();
+   xhr.onload = function() {
+      if (xhr.status === 200) {
+         console.log(xhr.responseText);
+         buscaClientes();
+         bootstrap.Modal.getInstance(document.getElementById("modalEditar")).hide();
+      }
+   }
+
+   xhr.open("POST", "cliente-update.php");
+   xhr.send(cliente);
+})
 
 function delCliente(id) {
    const ret = confirm("Confirma a exclusão do registro?");
